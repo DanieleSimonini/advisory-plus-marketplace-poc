@@ -1,7 +1,7 @@
 ﻿{
   "name": "advisory-plus-marketing-agency",
-  "version": "1.0.0",
-  "description": "POC marketing plugin per Advisory+ (Studio Solutions S.r.l. - RUI A000669271). 3 skill flat di test: marketing-manager, spiegato-facile, brand-strategist. Validazione pattern marketplace GitHub Cowork.",
+  "version": "1.0.1",
+  "description": "Sistema marketing autonomo Advisory+ (Studio Solutions S.r.l. - RUI A000669271). 65 skill flat: 10 persona (marketing-manager + brand-strategist + copywriter + social-media-manager + compliance-officer + art-director + seo-specialist + data-analyst + crm-lead-manager + content-producer) + 4 voci editoriali (spiegato-facile + caso-reale + badvisor + analisi) + 10 content format + 6 strategia + 7 visual + 5 compliance + 5 seo + 5 data + 5 crm + 3 production + 5 publish. 8 slash command + hooks + MCP config.",
   "author": {
     "name": "Studio Solutions S.r.l."
   }

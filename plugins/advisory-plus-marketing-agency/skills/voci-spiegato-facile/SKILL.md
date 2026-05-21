@@ -1,5 +1,5 @@
 ﻿---
-name: spiegato-facile
+name: voci-spiegato-facile
 description: Applica la voce editoriale ðŸ§  Spiegato Facile (Brand Book v1.2 sez. 4.1) â€” registro didattico-narrativo che parte da una domanda quotidiana o da un'analogia concreta (il frigorifero rotto, l'ombrello prima del temporale, il check-up dall'idraulico) per spiegare a un pubblico non esperto un concetto assicurativo. Triggera su contenuti del Pillar 1 (Educazione assicurativa always-on), su contenuti dei pillar rotanti a livello base (entrata in un tema), su spiegazioni introduttive di prodotti, su risposte FAQ trasformate in contenuto. Lunghezze standard per canale: post LinkedIn/Facebook 250-300p Â· articolo blog 1000-1500p Â· Stories serie 80-120p Â· Reel/short video 30-45 sec Â· email educational 200-300p. NON usa apparato citazionale (per quello â†’ voce-analisi). NON Ã¨ ironica (per quello â†’ voce-badvisor). NON Ã¨ narrativa di personaggi (per quello â†’ voce-caso-reale).
 ---
 # ðŸ§  Voce editoriale Spiegato Facile â€” Advisory+
