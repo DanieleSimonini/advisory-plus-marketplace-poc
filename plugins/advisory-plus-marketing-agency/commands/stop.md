@@ -1,94 +1,182 @@
 ---
 name: stop
 description: Kill switch del sistema marketing Advisory+. Ferma un singolo item del piano (/stop #N) o disattiva l'intera automazione (/stop tutto). Effetto immediato, irreversibile salvo riattivazione esplicita.
-argument-hint: [#N per singolo item | "tutto" per kill switch globale]
+argument-hint: [#N per singolo item | "tutto" per kill switch globale | "riattiva" per riattivare]
 ---
 
-# /stop — Kill switch CEO
+# /stop — Kill switch sistema marketing
 
-## Cosa fa
+Quando vieni invocato con `/stop $ARGUMENTS`, esegui SUBITO le istruzioni qui sotto. **WRITE su filesystem** — effetto immediato.
 
-Interrompe esecuzione di contenuti pianificati. Due modalità:
+## Step 1 — Parse argomenti
 
-### Modalità 1 — `/stop #N`
-Stoppa il singolo item numero `N` del piano settimanale corrente. NON tocca gli altri.
+`$ARGUMENTS` deve essere uno tra:
 
-### Modalità 2 — `/stop tutto`
-**Kill switch globale.** Flip `config/AUTOMAZIONE_ATTIVA=false`. Blocca:
-- Ogni publish automatico
-- Ogni scheduled-task (cron)
-- Ogni hook automatico
-- Friday Email automatica
+| Pattern | Azione |
+|---|---|
+| `#N` (es. `#3`, `#42`) | Stop singolo item con id N nel `piano_corrente.json` |
+| `tutto` | Kill switch globale: disattiva intera automazione (flag `automation_active=false`) |
+| `riattiva` | Riattiva sistema dopo `/stop tutto` (flag `automation_active=true`) |
+| (vuoto) o altro | Mostra errore + sintassi e fermati |
 
-NON blocca:
-- Chat operative (il CEO può ancora chattare col MM)
-- Lettura/scrittura file
-- Compliance checks on-demand
-
-## Sintassi
+Se errore:
 
 ```
-/stop #3                → stoppa item #3 del piano corrente
-/stop #3,#5,#7          → stoppa multipli item
-/stop tutto             → kill switch globale
-/stop tutto motivo=crisi → kill switch con motivo loggato
+❌ Sintassi non valida.
+
+Sintassi:
+/stop #N          → stoppa singolo item piano (es. /stop #3)
+/stop tutto       → kill switch globale, disattiva automazione
+/stop riattiva    → riattiva sistema dopo kill switch globale
+
+Per stato corrente: /stato
+Per cambiare modalità (ferie/crisi): command modalita
 ```
 
-## Skill innescata
+## Step 2 — Localizza i file di stato
 
-`skills/process/safety/stop/SKILL.md`
+Path base:
 
-## Output
-
-### `/stop #N`
 ```
-🛑 STOP #3 ricevuto.
-Item: "mer 20 mag 18:00 Blog THE ADVISOR — LTC il numero che cambia"
-Status: bloccato (non sarà pubblicato)
-Loggato in: /03_Aree_di_lavoro/01_Strategia/Verbale.md → STATO ATTUALE
-Effetto: immediato.
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\04_Risorse\Stato_Sistema\
 ```
 
-### `/stop tutto`
+File coinvolti:
+- `piano_corrente.json` (per stop item singolo)
+- `automation_state.json` (per kill switch globale)
+
+Crea cartella o file vuoti se mancano.
+
+## Step 3a — CASO "stop #N" (singolo item)
+
+1. Read `piano_corrente.json`. Schema atteso:
+   ```json
+   {
+     "settimana": "Wxx YYYY-MM-DD/YYYY-MM-DD",
+     "items": [
+       {"id": 1, "channel": "...", "date": "ISO", "status": "pending|published|skipped|stopped", "title": "...", "pillar": "..."}
+     ]
+   }
+   ```
+2. Cerca item con `id == N`.
+3. Se NON trovato → mostra errore:
+   ```
+   ❌ Item #N non trovato nel piano corrente.
+   Verifica con: command stato
+   ```
+4. Se trovato:
+   - Aggiorna `status` a `stopped`
+   - Aggiungi campo `stopped_at` (timestamp ISO)
+   - Aggiungi campo `stopped_by` = `CEO via /stop`
+   - Write `piano_corrente.json`
+5. Append entry a `pending_ceo.jsonl`:
+   ```json
+   {"date": "ISO", "action": "Item #N stoppato — valutare se ripianificare", "severity": "info"}
+   ```
+
+Output:
+
 ```
-🛑🛑🛑 KILL SWITCH GLOBALE ATTIVATO
-─────────────────────────────────
-AUTOMAZIONE_ATTIVA = false (era: true)
-Timestamp: 2026-05-18 19:32
-Motivo: [se fornito]
+🛑 ITEM #N STOPPATO
 
-Bloccati:
-- 0 publish in coda nei prossimi 7gg
-- 5 scheduled tasks (Friday Email · Monday inbox · daily check · token refresh · weekly report)
-- 2 hook automatici
+Titolo: [title]
+Canale: [channel]
+Data prevista: [date]
+Pillar: [pillar]
 
-Per riattivare: /modalita normale
+✅ Status aggiornato a `stopped` in piano_corrente.json
+✅ Pending CEO: "ripianificare?" registrato per Friday Email
+
+Per riattivarlo: chiedi al MM "riattiva item #N" oppure modifica manuale piano.
 ```
 
-## Comportamento
+## Step 3b — CASO "stop tutto" (kill switch globale)
 
-- **Conferma sempre cosa è stato bloccato** (item title, scheduled tasks, hook)
-- **Loga in Verbale** con timestamp e motivo (se fornito)
-- **Backup snapshot piano** prima di stop (per eventuale rollback)
-- **Notifica via email** (se SMTP attivo) al CEO con riepilogo
-- **NON disattiva la chat** — il CEO può sempre intervenire
+1. Read `automation_state.json` (o crea con default se manca):
+   ```json
+   {
+     "automation_active": true,
+     "stopped_at": null,
+     "stopped_by": null,
+     "stopped_reason": null
+   }
+   ```
+2. Aggiorna:
+   - `automation_active` = `false`
+   - `stopped_at` = timestamp ISO corrente
+   - `stopped_by` = `CEO via /stop tutto`
+   - `stopped_reason` = `"(non specificato)"` (CEO può aggiornare a mano)
+3. Write `automation_state.json`
+4. Append entry critica a `pending_ceo.jsonl`:
+   ```json
+   {"date": "ISO", "action": "SISTEMA SPENTO — richiesta riattivazione esplicita", "severity": "critical"}
+   ```
 
-## Riattivazione
+Output:
 
-Solo via `/modalita normale` (slash command separato). Non c'è "/start tutto" — la scelta è esplicita per evitare riattivazioni accidentali.
+```
+🚨🚨🚨 KILL SWITCH GLOBALE ATTIVATO
 
-## Email subject equivalent
+Sistema marketing Advisory+ DISATTIVATO dal: [timestamp IT]
 
-In modalità email (rispondi con subject specifico al Friday Email):
-- `STOP #3` → equivalente `/stop #3`
-- `STOP TUTTO` → equivalente `/stop tutto`
+Effetto immediato:
+- Tutti gli item `pending` nel piano corrente: SOSPESI (status invariato ma non eseguiti)
+- Scheduled task automatici: NON eseguiti dal prossimo trigger
+- Hook pre-publish: BLOCCO
+- Friday Email automatica: NON inviata
+- Monitoring (oncall) e Compliance Officer alert: rimangono ATTIVI
 
-(skill `process/strategia/week-mon` parsea l'inbox lun 06:00)
+Per riattivare: command stop riattiva
 
-## Compliance
+⚠️ Questa è azione critica — registrata in pending_ceo.jsonl con severity=critical.
+```
 
-L'hook `pre-publish-compliance` NON è il kill switch. Quello blocca contenuti non conformi; questo è una scelta strategica del CEO.
+## Step 3c — CASO "stop riattiva" (uscita dal kill switch)
+
+1. Read `automation_state.json`.
+2. Se `automation_active` è già `true`:
+   ```
+   ℹ️ Sistema già attivo. Nessuna azione.
+   ```
+3. Se `automation_active` è `false`:
+   - `automation_active` = `true`
+   - `restarted_at` = timestamp ISO corrente
+   - `restarted_by` = `CEO via /stop riattiva`
+   - (Lascia campi `stopped_*` come storico, non azzerare)
+4. Write `automation_state.json`
+5. Append entry a `pending_ceo.jsonl`:
+   ```json
+   {"date": "ISO", "action": "Sistema riattivato — verifica piano corrente prima di pubblicare", "severity": "info"}
+   ```
+
+Output:
+
+```
+✅ SISTEMA RIATTIVATO
+
+Marketing Advisory+ tornato in modalità attiva dal: [timestamp IT]
+(Era spento da: [stopped_at IT] · Motivo: [stopped_reason])
+
+Prima del prossimo publish ti consiglio:
+1. command stato → verifica scheduled task e item pending
+2. command modalita → conferma sia normale (non ferie/crisi)
+3. command piano-settimana → verifica piano corrente
+```
+
+## Vincoli di stile
+
+- **Effetto immediato** — write subito, nessuna conferma
+- **NO domande di follow-up** — write e basta, output asciutto
+- **NO uso di tool Skill** — self-contained
+- **Output adattivo per caso**: stop singolo ~10 righe, stop tutto ~15 righe, riattiva ~8 righe
+- **Mai dimenticare** di scrivere su `pending_ceo.jsonl` per audit trail
+
+## Edge case
+
+- Piano corrente JSON malformato → NON modificare, mostra "🟡 piano_corrente.json malformato, intervieni a mano"
+- `/stop tutto` quando sistema già spento → mostra "ℹ️ Sistema già spento dal [data]. Per riattivare: command stop riattiva"
+- File `Stato_Sistema/` non writable (permessi) → mostra errore con percorso file e fermati
 
 ---
 
-*Slash command v1.0 — Plugin Build Sessione 8 — 2026-05-18*
+*Slash command v1.1 — refactor Sessione 22 — 2026-05-21 — istruzione imperativa self-contained, WRITE-CRITICAL.*

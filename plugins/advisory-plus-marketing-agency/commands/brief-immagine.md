@@ -4,112 +4,157 @@ description: Genera un brief pronto-uso per cc-nano-banana (Gemini 2.5 Flash Ima
 argument-hint: [tema in italiano] [opzionale: pillar | formato (post|reel|story|blog-cover|youtube-thumb)]
 ---
 
-# /brief-immagine — Brief cc-nano-banana coordinato Design System
+# /brief-immagine — Brief nano-banana coordinato Design System v1.0
 
-## Cosa fa
+Quando vieni invocato con `/brief-immagine $ARGUMENTS`, esegui SUBITO le istruzioni qui sotto. Sei l'**Art Director Advisory+** per questo task.
 
-Costruisce un **prompt completo e validato** per la skill `cc-nano-banana` (Gemini 2.5 Flash Image API key `NANOBANANA_GEMINI_API_KEY`), garantendo:
+## Step 1 — Parse argomenti
 
-- **Palette Design System v1.0** (Navy 700 `#001660` · Navy 800 `#011750` · Teal 500 `#2DD4C5` · Mist `#F2F4F9` · Ink `#0F1A38`)
-- **Font lock**: solo Inter Tight / Source Serif 4 / JetBrains Mono (mai altre)
-- **Dimensione canale-specifica**
-- **Tono visivo** coerente con voce editoriale (Spiegato Facile = pulito · Badvisor = ironico · Caso Reale = umano · Analisi = data-driven)
-- **No volti reali** (compliance + ethics)
-- **No loghi compagnie** (compliance — non possiamo mostrare logo Generali su nostro materiale)
-- **Sempre disclaimer RUI** dove canale lo consente
+`$ARGUMENTS` può contenere:
+- **Tema** (obbligatorio): descrizione del contenuto in italiano, es. "TCM famiglia protetta", "LTC RSA Camaiore"
+- **Pillar** (opzionale): `pillar=P1|P2|P3|P4|P5` — se omesso, inferiscilo dal tema (vedi mapping in /spunto Step 3)
+- **Formato** (opzionale): `formato=post|reel|story|blog-cover|youtube-thumb` — default `post` (quadrato 1080×1080)
 
-## Sintassi
+Se tema mancante:
 
 ```
-/brief-immagine LTC famiglia
-/brief-immagine "il dopo di noi" Famiglia reel
-/brief-immagine tutela legale lavoro post
-/brief-immagine versilia broker territorio blog-cover
+❌ Tema mancante.
+
+Sintassi:
+/brief-immagine [tema] [opzionale: pillar=P1-5] [formato=post|reel|story|blog-cover|youtube-thumb]
+
+Esempi:
+/brief-immagine TCM famiglia protetta
+/brief-immagine LTC RSA Camaiore formato=blog-cover
+/brief-immagine Tutela legale famiglia pillar=P4 formato=reel
 ```
 
-Argument hint:
-- **tema**: 2-6 parole italiano
-- **pillar** (opzionale): match con uno dei 12 pillar Brand Book sez. 6+6bis. Se omesso, MM infers.
-- **formato** (opzionale): default `post` (1080x1080)
+## Step 2 — Carica Design System v1.0
 
-## Skill innescata
-
-`skills/process/visual/brief-image/SKILL.md` → genera il prompt → passa a `skills/dependencies/cc-nano-banana/run/SKILL.md` che chiama Gemini.
-
-## Output
+Leggi (se non già in cascata di contesto):
 
 ```
-🎨 BRIEF IMMAGINE — LTC famiglia (post 1080x1080)
-─────────────────────────────────
-
-PILLAR: Il dopo di noi, il dopo di loro
-VOCE VISIVA: Spiegato Facile (pulito · sereno · didattico)
-CANALE: Instagram + LinkedIn post quadrato 1080x1080
-
-PROMPT cc-nano-banana (pronto da incollare):
-"""
-Editorial illustration, flat vector style, soft geometric shapes.
-Composition: An elderly mother (silhouette only, no face features) sitting in armchair, with adult daughter (silhouette only) standing behind, hand resting on shoulder. Soft warm light from window left.
-Palette strict: Navy 700 #001660 dominant background, Navy 800 #011750 furniture, Teal 500 #2DD4C5 single accent on a small detail (flowers, blanket), Mist #F2F4F9 light areas, Ink #0F1A38 outlines.
-NO faces visible, NO logos, NO text inside image.
-Aspect ratio 1:1, 1080x1080px, clean negative space top-right 25% for text overlay.
-Mood: serene, dignified, generational warmth.
-Style references: editorial illustrations of Aatish Bhatia, but more minimal.
-"""
-
-PARAMETRI cc-nano-banana:
-- model: gemini-2.5-flash-image-preview
-- aspect_ratio: "1:1"
-- output_size: 1080x1080
-- safety: standard
-- variations: 3 (per A/B + 1 backup)
-
-OVERLAY TESTO (post-generazione, da gestire skill `visual/wrapper-overlay`):
-- Heading: "Il dopo di noi" (Inter Tight Bold 64pt · #F2F4F9)
-- Subheading: "Long Term Care, prima che diventi un'urgenza" (Inter Tight Regular 28pt · #2DD4C5)
-- Footer: "Advisory+ · RUI A000669271" (JetBrains Mono 14pt · #F2F4F9 60% opacity)
-
-COMPLIANCE:
-🟢 No volti reali · No logo · Tono dignitoso · Disclaimer RUI presente
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\04_Risorse\Brand_Visual\Design_System_v1.html
 ```
 
-## Comportamento
+E Brand Book sez. 8 in:
 
-- **Mai inventare claim numerici** nell'image (no "il 70% delle famiglie..." senza dato verificato)
-- **Mai usare stock people photography**: solo illustrazioni vector flat o silhouette
-- **Mai font diversi** dai 3 ammessi (lock duro)
-- **Sempre 1 accent Teal**, mai dominante
-- **Disclaimer RUI** dimensione minima leggibile mobile (12pt+)
+```
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\00_Brand_Book_v1.1.md
+```
 
-## Formati supportati
+Se i file non sono disponibili, usa questi parametri di fallback (memorizzati dal Brand Book v1.1 sez. 8):
 
-| Formato | Dimensione | Canale |
-|---|---|---|
-| `post` | 1080x1080 | IG + LinkedIn + FB |
-| `reel` | 1080x1920 | IG Reel + Stories |
-| `story` | 1080x1920 | IG/FB Stories |
-| `blog-cover` | 1600x900 | THE ADVISOR header |
-| `youtube-thumb` | 1280x720 | YouTube thumbnail |
-| `carousel` | 1080x1080 (multi) | IG/LinkedIn carousel (1-10 slide) |
+```
+COLORI (esadecimali per nano-banana):
+- Primario navy 700:  #001660
+- Background scuro:   #011750
+- Accent unico teal:  #2DD4C5
+- Testo ink:          #0F1A38
+- Surface mist:       #F2F4F9
 
-## Pillar style guide (rapido)
+FONT (open source):
+- Heading/UI/Body: Inter Tight
+- Citazioni edit.: Source Serif 4
+- Dati/Mono:       JetBrains Mono
 
-| Pillar | Voce visiva | Elementi |
-|---|---|---|
-| Famiglia che protegge | Sereno · caldo · silhouette generazionali | Casa · mani · finestre · luce naturale |
-| Dopo di noi (LTC) | Dignitoso · genealogico · senza pietismo | Generazioni · oggetti tramandati · scale del tempo |
-| Risparmio sensato | Misurato · matematico · pulito | Geometrie · grafici stilizzati · monete vector |
-| Tutela legale | Strutturale · architettonico · stabilità | Pilastri · bilance · porte · scudi minimali |
-| Territorio (rimosso da v1.2) | — | (n/a) |
-| Analisi | Data-driven · grafici · numeri | Bar chart · line chart · annotations JetBrains Mono |
+STILE FOTOGRAFICO:
+- Volti italiani realistici, no stereotipi
+- Luce naturale, ambientazioni domestiche/professionali italiane
+- Composizione minimalista, ampio spazio negativo
+- NO emoji nelle immagini, NO testo all-caps inglese
+- NO loghi compagnie mandatarie nelle immagini (compliance)
+```
 
-## Esempio fail (cosa NON deve uscire)
+## Step 3 — Mappa formato → dimensioni
 
-❌ "famiglia sorridente foto realistica" → vietato (volti reali)
-❌ "logo Generali in basso a destra" → vietato (compliance)
-❌ "scritta '40% di sconto'" → vietato (claim + IVASS)
-❌ "stile Pixar/Disney" → no (non coerente Design System)
+| Formato | Dimensioni px | Aspect ratio | Uso |
+|---|---|---|---|
+| `post` (default) | 1080 × 1080 | 1:1 | Instagram/Facebook/LinkedIn quadrato |
+| `reel` | 1080 × 1920 | 9:16 | Reel IG, TikTok, YouTube Short |
+| `story` | 1080 × 1920 | 9:16 | IG/FB Stories |
+| `blog-cover` | 1920 × 1080 | 16:9 | Copertina articolo blog THE ADVISOR |
+| `youtube-thumb` | 1280 × 720 | 16:9 | Thumbnail video YouTube |
+
+## Step 4 — Inferisci moodboard per pillar
+
+Mapping pillar → mood visual:
+
+| Pillar | Tono visivo | Soggetti tipici | Palette dominante |
+|---|---|---|---|
+| P1 La famiglia che protegge | Caldo, sicuro, intimo | Famiglia giovane, mani, abbraccio, casa | Navy + accent teal + warm light |
+| P2 Il dopo di noi, il dopo di loro | Sereno, dignità, generazionale | Anziano + figlio adulto, mani strette, finestra | Navy + soft teal + warm gray |
+| P3 Risparmio sensato | Pulito, equilibrato, futuro | Salvadanaio, grafico ascendente sobrio, tazza caffè | Navy + accent teal + cream |
+| P4 Tutela legale invisibile | Discreto, scudo, sicurezza | Ombrello, ponte, mano protettiva, contratto | Navy + accent teal + cool gray |
+| P5 Territorio Advisory+ | Versilia, mare, comunità | Costa toscana, sede ufficio, team al lavoro | Navy + accent teal + sea blue |
+
+## Step 5 — Genera il prompt nano-banana
+
+Costruisci un prompt in **inglese** (cc-nano-banana / Gemini 2.5 Flash Image lavora meglio in inglese) che includa:
+
+1. **Subject + scene** (1 frase)
+2. **Composition** (regola dei terzi, spazio negativo, focal point)
+3. **Lighting** (luce naturale, ora del giorno, mood)
+4. **Color palette** (3 colori espliciti hex dal Design System)
+5. **Style references** (es. "editorial photography, Magnum-style, Italian lifestyle, premium")
+6. **Negative prompt** (cose da evitare: testo, loghi, watermark, volti deformati)
+7. **Aspect ratio** (esplicito)
+
+## Step 6 — Output
+
+Mostra esattamente questo blocco:
+
+```
+═══════════════════════════════════════════════════
+🎨 BRIEF IMMAGINE · Advisory+
+Tema: [tema italiano]
+Pillar: [P1-5 nome esteso]
+Formato: [formato] · Dimensioni: [WxH] px · Aspect: [ratio]
+═══════════════════════════════════════════════════
+
+📝 PROMPT NANO-BANANA (copia-incolla in cc-nano-banana o Gemini Flash Image)
+
+```
+[prompt completo in inglese, 4-8 righe]
+Style: [style references]
+Color palette: [3 hex codes]
+Negative prompt: [cose da evitare]
+Aspect ratio: [ratio]
+Output size: [WxH] px
+```
+
+🎨 PARAMETRI TECNICI
+
+Colori dominanti: [hex 1] · [hex 2] · [hex 3]
+Font overlay (se applicabile): Inter Tight Bold per heading, Inter Tight Regular per body
+Loghi: Logo Advisory+ in [bianco|colori] da 04_Risorse/Loghi/, posizione [angolo basso destra | top center]
+
+📐 VARIANTI ALTERNATIVE (genera anche queste se serve riadattare)
+
+Variante quadrata 1080×1080 (post): [prompt adattato 1 riga]
+Variante verticale 1080×1920 (reel/story): [prompt adattato 1 riga]
+Variante orizzontale 1920×1080 (blog/YouTube): [prompt adattato 1 riga]
+
+═══════════════════════════════════════════════════
+COMPLIANCE: il brief NON include loghi di compagnie mandatarie nelle immagini né claim su prodotto. Disclaimer RUI separato (non in immagine, in caption).
+═══════════════════════════════════════════════════
+```
+
+## Vincoli di stile
+
+- **Prompt nano-banana in INGLESE** (modello performa meglio)
+- **Mai stereotipi**: no famiglia bianca standardizzata, no anziano triste solo
+- **Mai testo inglese sull'immagine** se è per pubblico IT
+- **NO loghi compagnie mandatarie** nelle immagini (compliance)
+- **NO firme/watermark** AI generation visibili
+- **NO uso di tool Skill** — self-contained
+
+## Edge case
+
+- Se Design System file non leggibile → usa fallback in Step 2 (parametri memorizzati)
+- Se pillar non inferibile → chiedi 1 sola volta "Pillar P1-P5?" e fermati in attesa (eccezione al fire-and-forget)
+- Se tema è esplicitamente promo prodotto specifico (es. "TCM Famiglia Sicura promo lancio") → aggiungi alert: "🟡 questo brief promo richiede review Compliance Officer prima di generare l'immagine: lancia /compliance-check su caption associata"
 
 ---
 
-*Slash command v1.0 — Plugin Build Sessione 8 — 2026-05-18*
+*Slash command v1.1 — refactor Sessione 22 — 2026-05-21 — istruzione imperativa self-contained.*

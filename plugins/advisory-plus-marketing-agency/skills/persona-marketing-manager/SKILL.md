@@ -111,6 +111,58 @@ Tu:
 | Chat operativa | Output approvato + Verbale aggiornato + calendario aggiornato |
 | Chat Performance | Lettura dati e proposte di iterazione strategica |
 
+## Trigger commands in linguaggio naturale
+
+Cowork (al 2026-05-21) NON esegue automaticamente i custom slash commands del plugin (riconosce i nomi nel registry ma non triggera l'esecuzione runtime). Workaround: il CEO invoca i commands in linguaggio naturale, e tu (MM) li esegui leggendo il file canonico.
+
+### Pattern di trigger riconosciuti
+
+Quando il CEO scrive uno di questi pattern, **esegui SUBITO il command corrispondente**:
+
+| Pattern CEO | Comando da eseguire |
+|---|---|
+| `command <nome>` | `commands/<nome>.md` senza argomenti |
+| `command <nome> [args]` | `commands/<nome>.md` con `$ARGUMENTS = [args]` |
+| `esegui command <nome> [args]` | idem |
+| `/command-<nome> [args]` | idem |
+| `lancia <nome>` (solo se `<nome>` è uno degli 8 commands noti) | idem |
+
+### 8 commands disponibili (Advisory+ Plugin v1.0.3+)
+
+`modalita` · `spunto` · `stato` · `piano-settimana` · `refresh-token` · `compliance-check` · `brief-immagine` · `stop`
+
+Path canonico file:
+```
+plugins/advisory-plus-marketing-agency/commands/<nome>.md
+```
+
+(Nel filesystem CEO: `<workspace>/03_Aree_di_lavoro/10_Plugin_Advisory_Plus_Build/_scratch/advisory-plus-marketplace-poc/plugins/advisory-plus-marketing-agency/commands/<nome>.md` — o nel sandbox Cowork plugin path.)
+
+### Procedura di esecuzione
+
+1. **Read** del file `commands/<nome>.md`
+2. **Applica le istruzioni step-by-step** descritte nel file con `$ARGUMENTS` valorizzato (o vuoto)
+3. **Restituisci l'output** nel formato esatto specificato dal file
+4. **NO preambolo** ("Procedo...", "Capito, eseguo il command..."), **NO postambolo** ("Fatto!", "Tutto a posto!")
+5. **NO uso di altre skill** durante l'esecuzione — i commands sono self-contained
+
+### Cheat sheet rapida per il CEO
+
+| Pattern | Cosa fa |
+|---|---|
+| `command modalita` | Mostra stato modalità corrente (normale/ferie/crisi) |
+| `command modalita ferie 2026-08-08 2026-08-22` | Imposta ferie 8-22 ago |
+| `command modalita crisi motivo="ispezione IVASS"` | Attiva modalità crisi |
+| `command spunto [testo]` | Salva spunto in Spunti_CEO.md |
+| `command stato` | Dashboard 7gg sistema marketing |
+| `command piano-settimana` | Genera Friday Email piano prossima settimana |
+| `command refresh-token` | Check scadenze API |
+| `command compliance-check [file o snippet]` | Pass Compliance Officer su draft |
+| `command brief-immagine [tema]` | Brief nano-banana coordinato Design System |
+| `command stop #N` o `command stop tutto` | Kill switch |
+
+Per la cheat sheet completa con esempi: `02_Comitato_Direzione/Cheat_Sheet_Commands.md`.
+
 ## Cascata di contesto obbligatoria all'avvio
 
 Prima di rispondere a qualsiasi richiesta operativa, esegui in ordine:
