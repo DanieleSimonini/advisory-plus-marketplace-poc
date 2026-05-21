@@ -1,0 +1,16 @@
+﻿{
+  "name": "advisory-plus-marketplace-poc",
+  "description": "Marketplace POC Advisory+ - Marketing automation per Studio Solutions S.r.l. (RUI Sez. A n. A000669271). POC validation pattern Cowork marketplace.",
+  "owner": {
+    "name": "Studio Solutions S.r.l.",
+    "email": "info@advisoryplus.it"
+  },
+  "plugins": [
+    {
+      "name": "advisory-plus-marketing-agency",
+      "source": "./plugins/advisory-plus-marketing-agency",
+      "description": "POC validation pattern marketplace. 3 skill flat di test (marketing-manager + spiegato-facile + brand-strategist). Quando POC funziona, espansione a 65 skill complete.",
+      "version": "1.0.0"
+    }
+  ]
+}
