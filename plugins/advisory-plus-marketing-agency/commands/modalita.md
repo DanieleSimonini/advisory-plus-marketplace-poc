@@ -1,104 +1,117 @@
 ---
 name: modalita
-description: Switch della modalità operativa del sistema marketing Advisory+ — normale, ferie (riduzione/stop pianificato), crisi (blocco contenuti promozionali). Usalo prima di partire per ferie, durante eventi critici, o per riprendere dopo uno stop.
-argument-hint: [normale | ferie | crisi] [opzionale: start_date end_date per ferie]
+description: Switch della modalità operativa del sistema marketing Advisory+ (normale, ferie, crisi). Lancialo senza argomenti per leggere lo stato corrente, oppure con argomenti per cambiarlo. Aggiorna il file di stato persistente sul workspace.
+argument-hint: [normale | ferie YYYY-MM-DD YYYY-MM-DD [light|full] | crisi [motivo="..."]]
 ---
 
-# /modalita — Switch modalità operativa
+# /modalita — Switch modalità operativa Advisory+
 
-## Cosa fa
+Quando vieni invocato con `/modalita`, esegui SUBITO le istruzioni qui sotto. Non aspettare ulteriori input dal CEO. Non chiedere conferme.
 
-Cambia lo stato globale del sistema marketing. 3 modalità:
+## Step 1 — Localizza o crea il file di stato
 
-### 🟢 Modalità NORMALE
-Default. Tutto attivo: publish · scheduled tasks · hook · Friday Email · Monday inbox check.
-
-### 🌴 Modalità FERIE
-Riduce o ferma temporaneamente con riattivazione automatica a end_date. Il CEO è OOO ma il sistema continua a respirare:
-- **Light** (default): -50% volume contenuti · solo evergreen · no case study fresh · no commenti automatici
-- **Full stop**: 0 publish · solo monitoring · email out-of-office on `marketing@advisoryplus.it`
-
-### 🚨 Modalità CRISI
-Blocca **tutti i contenuti promozionali**. Lascia attivi solo:
-- Utility (es. comunicazioni clienti via email)
-- Risposte/commenti già pianificati a brand mentions
-- Monitoring e alert
-
-Usata in caso di: incidente compliance · ispezione IVASS · crisi reputazionale · emergenza CEO.
-
-## Sintassi
+Il file di stato canonico è:
 
 ```
-/modalita normale                                → torna a NORMALE
-/modalita ferie 2026-08-08 2026-08-22            → ferie 8-22 agosto (default light)
-/modalita ferie 2026-08-08 2026-08-22 full       → ferie full stop
-/modalita crisi                                  → CRISI subito (no end_date, richiede ritorno esplicito)
-/modalita crisi motivo="ispezione IVASS"         → CRISI con motivo loggato
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\04_Risorse\Stato_Sistema\modalita.json
 ```
 
-## Skill innescata
+Procedi così:
+1. Usa il tool **Read** sul path. Se restituisce errore "file not found":
+   - Crea la cartella `Stato_Sistema` se non esiste
+   - Crea il file con questo contenuto iniziale (usa il timestamp ISO 8601 corrente — se non sai l'ora precisa usa `bash: date -Iseconds`, altrimenti la data odierna fornita nell'env con ora `12:00:00+02:00`):
 
-`skills/process/safety/modalita/SKILL.md`
-
-## Output
-
-### Modalità FERIE light
+```json
+{
+  "stato": "normale",
+  "since": "<timestamp ISO 8601>",
+  "end_date": null,
+  "variante": null,
+  "motivo": null
+}
 ```
-🌴 MODALITÀ FERIE LIGHT ATTIVATA
+
+2. Se il file esiste, parsa il JSON.
+
+## Step 2 — Parse argomenti `$ARGUMENTS`
+
+Identifica il pattern degli argomenti ricevuti:
+
+| Pattern | Azione |
+|---|---|
+| (vuoto, nessun argomento) | **READ-ONLY**: mostra solo lo stato corrente, NON scrivere il file |
+| `normale` | Set: `stato=normale`, `end_date=null`, `variante=null`, `motivo=null`, aggiorna `since` |
+| `ferie YYYY-MM-DD YYYY-MM-DD` | Set: `stato=ferie`, `variante=light`, `end_date=secondo arg`, aggiorna `since` |
+| `ferie YYYY-MM-DD YYYY-MM-DD light` | Idem ma `variante=light` esplicito |
+| `ferie YYYY-MM-DD YYYY-MM-DD full` | Idem ma `variante=full` |
+| `crisi` | Set: `stato=crisi`, `motivo=null`, `end_date=null`, aggiorna `since` |
+| `crisi motivo="testo"` | Idem ma `motivo=testo` (estratto da virgolette) |
+| altro / malformato | NON scrivere. Mostra messaggio errore con sintassi corretta (vedi Step 4). |
+
+Per gli aggiornamenti: usa il tool **Write** sul path canonico con il JSON aggiornato. `since` deve essere il timestamp ISO 8601 corrente.
+
+## Step 3 — Output al CEO
+
+Scegli il formato in base a cosa hai fatto:
+
+### Caso A — Solo READ (nessun argomento ricevuto)
+
+Mostra esattamente questo blocco (sostituisci i valori tra parentesi quadre):
+
+```
+MODALITÀ CORRENTE: [STATO_MAIUSCOLO] [emoji]
 ─────────────────────────────────
-Periodo: 8 ago - 22 ago 2026 (14gg)
-Volume: -50% (da ~10/sett a ~5/sett)
-Contenuti permessi: evergreen + already-scheduled
-Contenuti bloccati: case study fresh · spunti CEO nuovi · annunci · commenti automatici
-Auto-revert: 23 ago 2026 00:00 → MODALITÀ NORMALE
+Attiva dal: [since formattata italiano breve, es. "21 mag 2026 ore 16:42"]
+[SE stato=ferie:] Fine prevista: [end_date formattata, es. "22 ago 2026"] · Variante: [variante]
+[SE stato=crisi:] Motivo: [motivo OPPURE "(non specificato)" se null]
 
-Email OOO: ✅ attivato su marketing@advisoryplus.it
-Friday Email durante ferie: ✅ inviata regolarmente (CEO può rispondere o silent approval)
-Monday inbox check: ✅ continua
+Per cambiare digita una delle sintassi qui sotto:
+/modalita normale
+/modalita ferie 2026-08-08 2026-08-22 [light|full]
+/modalita crisi [motivo="testo"]
 ```
 
-### Modalità CRISI
+Mapping emoji: `normale` → 🟢, `ferie` → 🌴, `crisi` → 🚨.
+
+### Caso B — WRITE (modalità cambiata)
+
+Mostra esattamente questo blocco:
+
 ```
-🚨 MODALITÀ CRISI ATTIVATA
+✅ MODALITÀ AGGIORNATA: [NUOVO_STATO_MAIUSCOLO] [emoji]
 ─────────────────────────────────
-Motivo: [se fornito]
-Timestamp: 2026-05-18 21:00
-Auto-revert: NO (richiede /modalita normale esplicita)
+Attiva dal: [nuovo since formattato]
+[SE stato=ferie:] Fine prevista: [end_date] · Variante: [variante]
+[SE stato=crisi:] Motivo: [motivo OPPURE "(non specificato)"]
 
-Bloccati IMMEDIATAMENTE:
-- 7 contenuti in coda settimana corrente
-- 2 contenuti scheduled W22
-- Friday Email piano automatico
-
-Permessi:
-- Risposte già programmate a brand mentions
-- Email utility a clienti
-- Monitoring
-
-Compliance Officer in modalità HIGH ALERT (semaforo solo 🟢 passa, 🟡 → 🔴 implicito).
+Stato persistito in 04_Risorse/Stato_Sistema/modalita.json
 ```
 
-## Comportamento
+### Caso C — Errore di parse argomenti
 
-- **Auto-revert ferie**: scheduled-task MCP imposta cron alla `end_date+1` per flip back a NORMALE
-- **Crisi NO auto-revert**: scelta esplicita del CEO (cautela)
-- **Loga in Verbale** sessione + email notifica
-- **Backup piano**: snapshot prima del switch, per eventuale ripristino
-- **Compliance Officer alert level**: cambia con la modalità
+NON scrivere il file. Mostra:
 
-## Email subject equivalent
-
-- `MODALITÀ FERIE 2026-08-08 2026-08-22` → equivalente `/modalita ferie 2026-08-08 2026-08-22`
-- `MODALITÀ CRISI` → equivalente `/modalita crisi`
-- `MODALITÀ NORMALE` → equivalente `/modalita normale`
-
-## Visibilità
-
-Lo stato corrente è sempre visibile in `/stato` (prima riga):
 ```
-📊 ADVISORY+ STATO 7gg [🌴 FERIE LIGHT fino 22 ago]
+❌ Sintassi non riconosciuta: "[argomenti ricevuti]"
+
+Stato corrente NON modificato: [stato corrente in MAIUSCOLO]
+
+Sintassi valide:
+  /modalita                                  → leggi stato corrente
+  /modalita normale                          → torna a normale
+  /modalita ferie 2026-08-08 2026-08-22       → ferie 8-22 ago (light)
+  /modalita ferie 2026-08-08 2026-08-22 full  → ferie full stop
+  /modalita crisi                            → crisi immediata
+  /modalita crisi motivo="ispezione IVASS"   → crisi con motivo
 ```
+
+## Step 4 — Vincoli di stile
+
+- **Output massimo 12 righe.** Niente preamboli ("Procedo...", "Ho capito che vuoi..."), niente postambolo ("Fatto!", "Tutto a posto!").
+- **Niente disclaimer compliance** in questo output (è command interno, non contenuto pubblico).
+- **Niente domande di follow-up.** Esegui e basta.
+- **Niente uso di tool Skill** durante l'esecuzione di questo command — è self-contained.
 
 ---
 
-*Slash command v1.0 — Plugin Build Sessione 8 — 2026-05-18*
+*Slash command v1.1 — Plugin Build Sessione 22 — 2026-05-21 — refactor da documentazione descrittiva a istruzione imperativa self-contained.*

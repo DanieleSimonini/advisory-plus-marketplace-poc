@@ -10,7 +10,7 @@
       "name": "advisory-plus-marketing-agency",
       "source": "./plugins/advisory-plus-marketing-agency",
       "description": "Sistema marketing autonomo Advisory+ - 65 skill (10 persona + 4 voci + 10 content + 6 strategia + 7 visual + 5 compliance + 5 seo + 5 data + 5 crm + 3 production + 5 publish) + 8 slash command + hooks + MCP wired.",
-      "version": "1.0.1"
+      "version": "1.0.2"
     }
   ]
 }
