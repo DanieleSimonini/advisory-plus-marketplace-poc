@@ -40,10 +40,10 @@ C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\04
 E Brand Book sez. 8 in:
 
 ```
-C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\00_Brand_Book_v1.1.md
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\00_Brand_Book_v1.2.md
 ```
 
-Se i file non sono disponibili, usa questi parametri di fallback (memorizzati dal Brand Book v1.1 sez. 8):
+Se i file non sono disponibili, usa questi parametri di fallback (memorizzati dal Brand Book v1.2 sez. 8):
 
 ```
 COLORI (esadecimali per nano-banana):

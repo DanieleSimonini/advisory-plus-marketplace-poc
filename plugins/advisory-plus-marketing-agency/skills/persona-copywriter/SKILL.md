@@ -134,5 +134,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il brief.
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/02_Copywriter.md` v1.0 + 4Âª voce ðŸ“Š Analisi (Brand Book v1.2, 2026-05-17)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/02_Copywriter.md` v1.0 + 4Âª voce ðŸ“Š Analisi (Brand Book v1.2, 2026-05-17)*
 

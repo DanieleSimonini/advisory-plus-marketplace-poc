@@ -131,5 +131,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il contenuto da v
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/04_Compliance_Officer.md` v1.0 + Onda 1 staging â€” Brand Book v1.2 + AI Act UE (2026-05-17) â€” Tool restrittivi Read+Grep, no scrittura*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/04_Compliance_Officer.md` v1.0 + Onda 1 staging â€” Brand Book v1.2 + AI Act UE (2026-05-17) â€” Tool restrittivi Read+Grep, no scrittura*
 

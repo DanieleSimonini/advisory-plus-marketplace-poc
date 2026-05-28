@@ -150,5 +150,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il brief.
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/08_CRM_Lead_Manager.md` v1.0 â€” Brand Book v1.2 (cluster 4 target, footer 4 soci ordine alfabetico, Brevo via API)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/08_CRM_Lead_Manager.md` v1.0 â€” Brand Book v1.2 (cluster 4 target, footer 4 soci ordine alfabetico, Brevo via API)*
 

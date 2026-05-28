@@ -94,5 +94,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il contenuto da v
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/01_Brand_Strategist.md` v1.0 â€” Brand Book v1.2 (2026-05-17) â€” Tool restrittivi Read+Glob+Grep, no scrittura*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/01_Brand_Strategist.md` v1.0 â€” Brand Book v1.2 (2026-05-17) â€” Tool restrittivi Read+Glob+Grep, no scrittura*
 

@@ -155,5 +155,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il file CSV o la 
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/07_Data_Analyst.md` v1.0 â€” Brand Book v1.2 + YouTube KPI + Trust Calibration Window (2026-05-17)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/07_Data_Analyst.md` v1.0 â€” Brand Book v1.2 + YouTube KPI + Trust Calibration Window (2026-05-17)*
 

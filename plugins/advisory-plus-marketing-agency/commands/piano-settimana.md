@@ -33,7 +33,7 @@ File da leggere (gestisci graziosamente se mancano):
 
 | File | Cosa serve |
 |---|---|
-| `00_Brand_Book_v1.1.md` (o ultimo Brand Book disponibile) | Pillar map sez. 6 + 6bis · Voci sez. 4 · Pillar of month sez. 7 |
+| `00_Brand_Book_v1.2.md` (o ultimo Brand Book disponibile) | Pillar map sez. 6 · Voci sez. 4 · Protocollo voci per canale sez. 11 · MM Decision Authority Framework sez. 13 |
 | `05_Calendario_editoriale/Spunti_CEO.md` | Sezione "📋 DA TRATTARE" → input grezzi del CEO da integrare |
 | `05_Calendario_editoriale/2026-MM_*.md` (mese corrente o target) | Piano editoriale mensile esistente — eventuali item già pianificati |
 | `04_Risorse/Stato_Sistema/modalita.json` | Se ferie → riduci -50% volume · Se crisi → solo utility · Se normale → volume pieno |

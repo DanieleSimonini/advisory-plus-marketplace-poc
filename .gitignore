@@ -1,0 +1,25 @@
+# FUSE filesystem artifacts (Cowork sandbox lascia dotfiles fuse_hidden* nei mount Nextcloud)
+.fuse_hidden*
+*/.fuse_hidden*
+**/.fuse_hidden*
+
+# Editor swap files
+*.swp
+*.swo
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local secrets (mai versionare)
+secrets.local.md
+*.local.md
+.env
+.env.local
+
+# Build artifacts temporary
+*.tmp
+__pycache__/
+*.pyc

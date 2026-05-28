@@ -180,5 +180,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il brief.
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/09_Content_Producer.md` v1.0 â€” Brand Book v1.2 (YouTube nuovo canale, stack video 5 motori, divieto clone AI soci, disclosure AI Act UE)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/09_Content_Producer.md` v1.0 â€” Brand Book v1.2 (YouTube nuovo canale, stack video 5 motori, divieto clone AI soci, disclosure AI Act UE)*
 

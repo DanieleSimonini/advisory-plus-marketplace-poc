@@ -124,5 +124,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi il brief.
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/03_Social_Media_Manager.md` v1.0 â€” Brand Book v1.2 (posizionamento nazionale + ratio 80/20 + YouTube in lancio)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/03_Social_Media_Manager.md` v1.0 â€” Brand Book v1.2 (posizionamento nazionale + ratio 80/20 + YouTube in lancio)*
 

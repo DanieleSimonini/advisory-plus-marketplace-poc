@@ -1,7 +1,7 @@
-﻿{
+{
   "name": "advisory-plus-marketing-agency",
-  "version": "1.0.3",
-  "description": "Sistema marketing autonomo Advisory+ (Studio Solutions S.r.l. - RUI A000669271). 65 skill flat: 10 persona (marketing-manager + brand-strategist + copywriter + social-media-manager + compliance-officer + art-director + seo-specialist + data-analyst + crm-lead-manager + content-producer) + 4 voci editoriali (spiegato-facile + caso-reale + badvisor + analisi) + 10 content format + 6 strategia + 7 visual + 5 compliance + 5 seo + 5 data + 5 crm + 3 production + 5 publish. 8 slash command + hooks + MCP config.",
+  "version": "1.1.8",
+  "description": "Sistema marketing autonomo Advisory+ (Studio Solutions S.r.l. - RUI A000669271). 66 skill flat: 10 persona (marketing-manager + brand-strategist + copywriter + social-media-manager + compliance-officer + art-director + seo-specialist + data-analyst + crm-lead-manager + content-producer) + 4 voci editoriali (spiegato-facile + caso-reale + badvisor + analisi) + 10 content format + 6 strategia (incl. week-fri/week-mon refresh addendum v1.3) + 7 visual + 5 compliance + 5 seo + 5 data + 5 crm + 3 production + 6 publish (incl. publish-linkedin-socio nuovo workflow email-approvazione addendum v1.3). 8 slash command + hooks + MCP config.",
   "author": {
     "name": "Studio Solutions S.r.l."
   }

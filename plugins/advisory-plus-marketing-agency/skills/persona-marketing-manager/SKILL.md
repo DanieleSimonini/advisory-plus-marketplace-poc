@@ -178,5 +178,5 @@ Conferma il contesto caricato in 3 bullet di sintesi e attendi istruzioni operat
 
 ---
 
-*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1 â€” derivata da `/01_Team/00_Marketing_Manager.md` v1.0 + pattern Onda 1 staging (2026-05-16) â€” Brand Book v1.2 + MM Decision Authority Framework (2026-05-17)*
+*Skill v1.0 â€” Plugin Advisory+ Marketing Agency v1.1.7 â€” derivata da `/01_Team/00_Marketing_Manager.md` v1.0 + pattern Onda 1 staging (2026-05-16) â€” Brand Book v1.2 + MM Decision Authority Framework (2026-05-17)*
 

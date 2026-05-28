@@ -38,13 +38,15 @@ Cosa controllo: claim IVASS/RUI · denominazioni mandatarie · disclaimer · pre
 Leggi (se non già in cascata di contesto):
 
 ```
-C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\00_Brand_Book_v1.1.md
+C:\Users\danie\Nextcloud\Marketing & Communication\ClaudeCoWork_TeamMarketing\00_Brand_Book_v1.2.md
 ```
 
-Sezioni critiche:
-- **Sez. 11 Compliance** — regole IVASS/RUI globali
-- **Sez. 12 Disclaimer** — testi disclaimer standard
-- **Sez. 5 Mandatarie** — denominazioni corrette (Generali Italia – Cattolica Assicurazioni, DAS Difesa Legale, UCA Tutela Legale e Peritale, Europ Assistance)
+Sezioni critiche (numerazione Brand Book v1.2):
+- **Sez. 7 Compliance IVASS/RUI** — regole globali (rendimenti, prezzi, testimonial, denigratorie, mandatarie, disclaimer RUI, dati inventati)
+- **Sez. 1 Identità aziendale** — denominazioni corrette mandatarie: **Generali Italia – Cattolica Assicurazioni**, **DAS Difesa Legale**, **UCA Tutela Legale e Peritale**, **Europ Assistance**
+- **Sez. 14 Canali video & YouTube + linee guida etiche AI avatar** — disclosure AI obbligatoria, divieti clone Daniele/soci/senior advisor, doppiaggio AI
+- **Sez. 4 Tone of voice** — verifica voce tra le 4 ammesse (Spiegato Facile · Badvisor · Caso Reale · Analisi)
+- **Sez. 11 Protocollo voci per canale** — pari risalto identitario 4 soci, ratio 80/20 LinkedIn personali, firme autoriali
 
 E la skill (se accessibile):
 

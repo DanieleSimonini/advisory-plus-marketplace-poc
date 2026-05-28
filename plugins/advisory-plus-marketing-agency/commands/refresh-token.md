@@ -1,7 +1,7 @@
 ---
 name: refresh-token
-description: Pre-flight check delle scadenze token API del sistema marketing Advisory+ (Meta, Gemini, HeyGen, Brevo, LinkedIn, Buffer, WordPress). Se entro 7gg dalla scadenza, guida il refresh con istruzioni step-by-step.
-argument-hint: [opzionale: meta | gemini | heygen | brevo | linkedin | buffer | wordpress | all (default all)]
+description: Pre-flight check delle scadenze token API del sistema marketing Advisory+ (Meta, Gemini, HeyGen, Brevo, LinkedIn, Buffer, WordPress, Aimon). Se entro 7gg dalla scadenza, guida il refresh con istruzioni step-by-step.
+argument-hint: [opzionale: meta | gemini | heygen | brevo | linkedin | buffer | wordpress | aimon | all (default all)]
 ---
 
 # /refresh-token — Check + guida refresh token API
@@ -10,7 +10,7 @@ Quando vieni invocato con `/refresh-token $ARGUMENTS`, esegui SUBITO le istruzio
 
 ## Step 1 — Identifica i token da controllare
 
-Default: tutti. Se `$ARGUMENTS` contiene uno tra `meta`, `gemini`, `heygen`, `brevo`, `linkedin`, `buffer`, `wordpress`, `all` → filtra di conseguenza.
+Default: tutti. Se `$ARGUMENTS` contiene uno tra `meta`, `gemini`, `heygen`, `brevo`, `linkedin`, `buffer`, `wordpress`, `aimon`, `all` → filtra di conseguenza.
 
 ## Step 2 — Leggi tracking scadenze
 
@@ -24,13 +24,15 @@ Schema atteso:
 
 ```json
 {
-  "meta":      { "type": "long_lived", "obtained_at": "ISO", "expires_at": "ISO", "scopes": ["..."], "notes": "..." },
-  "gemini":    { "type": "api_key",     "obtained_at": "ISO", "expires_at": null,  "notes": "API key senza scadenza" },
-  "heygen":    { "type": "api_key",     "obtained_at": "ISO", "expires_at": "ISO", "notes": "..." },
-  "brevo":     { "type": "api_key",     "obtained_at": "ISO", "expires_at": null,  "notes": "API key v3, no expiry" },
-  "linkedin":  { "type": "oauth_user",  "obtained_at": "ISO", "expires_at": "ISO", "scopes": ["..."], "notes": "..." },
-  "buffer":    { "type": "oauth_app",   "obtained_at": "ISO", "expires_at": "ISO", "notes": "..." },
-  "wordpress": { "type": "app_password","obtained_at": "ISO", "expires_at": null,  "notes": "Application Password, no expiry" }
+  "meta":              { "type": "long_lived",   "obtained_at": "ISO", "expires_at": "ISO", "scopes": ["..."], "notes": "..." },
+  "gemini":            { "type": "api_key",      "obtained_at": "ISO", "expires_at": null,  "notes": "API key senza scadenza" },
+  "heygen":            { "type": "api_key",      "obtained_at": "ISO", "expires_at": "ISO", "notes": "..." },
+  "brevo":             { "type": "api_key",      "obtained_at": "ISO", "expires_at": null,  "notes": "API key v3, no expiry" },
+  "linkedin_personal": { "type": "oauth_user",   "obtained_at": "ISO", "expires_at": "ISO", "scopes": ["..."], "notes": "..." },
+  "linkedin_brand":    { "type": "oauth_user",   "obtained_at": "ISO", "expires_at": "ISO", "scopes": ["..."], "notes": "..." },
+  "buffer":            { "type": "oauth_app",    "obtained_at": "ISO", "expires_at": "ISO", "notes": "..." },
+  "wordpress":         { "type": "app_password", "obtained_at": "ISO", "expires_at": null,  "notes": "Application Password, no expiry" },
+  "aimon":             { "type": "basic_auth",   "obtained_at": "ISO", "expires_at": "ISO", "notes": "Basic auth = credenziali pannello. expires_at = data ultima rotation + 6 mesi (best practice)" }
 }
 ```
 
@@ -60,15 +62,17 @@ Marca quelli con `semaforo` 🔴 o 🟡. Per ognuno, prepara la guida refresh (v
 oggi: [data IT]
 ═══════════════════════════════════════════════════
 
-| Servizio  | Tipo          | Residui | Stato | Azione |
-|-----------|---------------|---------|-------|--------|
-| Meta      | Long-lived    | [N] gg  | 🟢🟡🔴  | [...] |
-| Gemini    | API key       | ∞       | 🟢     | OK     |
-| HeyGen    | API key       | [N] gg  | 🟢🟡🔴  | [...] |
-| Brevo     | API key       | ∞       | 🟢     | OK     |
-| LinkedIn  | OAuth user    | [N] gg  | 🟢🟡🔴  | [...] |
-| Buffer    | OAuth app     | [N] gg  | 🟢🟡🔴  | [...] |
-| WordPress | App password  | ∞       | 🟢     | OK     |
+| Servizio        | Tipo          | Residui | Stato | Azione |
+|-----------------|---------------|---------|-------|--------|
+| Meta            | Long-lived    | [N] gg  | 🟢🟡🔴  | [...] |
+| Gemini          | API key       | ∞       | 🟢     | OK     |
+| HeyGen          | API key       | [N] gg  | 🟢🟡🔴  | [...] |
+| Brevo           | API key       | ∞       | 🟢     | OK     |
+| LinkedIn person | OAuth user    | [N] gg  | 🟢🟡🔴  | [...] |
+| LinkedIn brand  | OAuth user    | [N] gg  | 🟢🟡🔴  | [...] |
+| Buffer          | OAuth app     | [N] gg  | 🟢🟡🔴  | [...] |
+| WordPress       | App password  | ∞       | 🟢     | OK     |
+| Aimon SMS       | Basic auth    | [N] gg  | 🟢🟡🔴  | [...] |
 
 [SE 0 token 🔴/🟡:]
 ✅ Tutti i token in stato sano. Prossimo check consigliato: tra 7 giorni.
@@ -154,6 +158,28 @@ Tempo: ~5 min · Frequenza: on-demand (no scadenza fissa)
 ℹ️ Senza scadenza naturale (API key permanenti o app passwords). Rotation best-practice ogni 12 mesi.
 ```
 
+**Aimon SMS (alert sistema → CEO)**
+
+```
+🔄 AIMON — Rotation password pannello (best practice ogni 6 mesi)
+
+NOTA: Aimon non ha API key separata. La password del pannello web È l'auth API.
+Rotation password = rotation auth API. Nessuna scadenza naturale, ma rotation 6 mesi è best practice.
+
+Step:
+1. Vai su https://aimon.it/login → login con username advisoryplus
+2. Account → Cambia Password → genera password forte (16+ char random)
+3. Aggiorna 04_Risorse/Stato_Sistema/aimon.env → AIMON_PASS=[nuova password]
+4. Aggiorna 04_Risorse/Stato_Sistema/secrets.local.md sez. Aimon → password rotata + last_rotation_iso
+5. Aggiorna tokens.json → aimon.obtained_at (=oggi) + aimon.expires_at (=oggi+6 mesi)
+6. Test smoke: lancia scripts/alert-sms-aimon.ps1 con -Severity info per verificare auth nuova funziona
+7. Se smoke fallisce con error -3 (Access denied): rollback alla password vecchia in env, indaga.
+
+NB: NO impatto sull'alias mittente "Advisory" (rimane invariato lato Aimon, è separato dalle credenziali).
+
+Tempo: ~5 min · Frequenza: ogni 6 mesi (rotation security best practice)
+```
+
 ## Vincoli di stile
 
 - **NO scrittura su tokens.json o secrets.local.md** — il CEO esegue manualmente i passi
@@ -168,4 +194,4 @@ Tempo: ~5 min · Frequenza: on-demand (no scadenza fissa)
 
 ---
 
-*Slash command v1.1 — refactor Sessione 22 — 2026-05-21 — istruzione imperativa self-contained, READ-ONLY.*
+*Slash command v1.2 — Sessione 3-bis chat 10 Audit Sistema — 2026-05-25 sera — istruzione imperativa self-contained, READ-ONLY. Changelog v1.2: aggiunto Aimon SMS come 9° servizio (basic auth, rotation 6 mesi best practice).*
